@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#051a0e">
+<title>مجتمع مجلس أسرة آل العَيْدَرُوس</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ══ RESET ══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { width:100%; height:100%; overflow:hidden; background:#051a0e; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ══ VIDEO SHELL ══ */
+/* Portrait 9:16 — fills phone screen, max 430px wide */
+.video-shell {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;          /* dynamic viewport height for mobile */
+  max-height: 932px;
+  background: #051a0e;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══ BACKGROUND GRADIENT LAYERS ══ */
+.bg-layer {
+  position: absolute; inset: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-0 { background: radial-gradient(ellipse at 50% 30%, #0d4a2a 0%, #051a0e 70%); }
+.bg-1 { background: radial-gradient(ellipse at 30% 60%, #0a3020 0%, #051a0e 70%); opacity:0; }
+.bg-2 { background: radial-gradient(ellipse at 70% 40%, #072515 0%, #010a05 70%); opacity:0; }
+.bg-3 { background: radial-gradient(ellipse at 50% 70%, #0d3a1a 0%, #020e06 70%); opacity:0; }
+.bg-4 { background: radial-gradient(ellipse at 40% 50%, #09341e 0%, #051a0e 70%); opacity:0; }
+
+/* ══ PROGRESS BAR (top) ══ */
+.progress-track {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: rgba(255,255,255,.12);
+  z-index: 50;
+}
+.progress-fill {
+  height: 100%; background: #25D366;
+  width: 0%; transition: width .3s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ══ TOP STATUS BAR ══ */
+.status-bar {
+  position: absolute; top: 8px; left: 16px; right: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 40;
+}
+.logo-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(0,0,0,.35); backdrop-filter: blur(8px);
+  border-radius: 20px; padding: 5px 12px 5px 8px;
+}
+.logo-chip span { font-size: 18px; }
+.logo-chip p { font-size: 11px; color: rgba(255,255,255,.8); font-weight: 600; line-height: 1.2; }
+.logo-chip p small { color: #25D366; font-size: 9px; display:block; }
+.section-dots {
+  display: flex; gap: 4px; align-items: center;
+}
+.section-dots i {
+  display: block; border-radius: 50%;
+  background: rgba(255,255,255,.25); transition: all .4s ease;
+}
+
+/* ══ CONTENT AREA ══ */
+.content {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 80px 28px 110px;
+  position: relative; z-index: 10;
+  text-align: center;
+}
+
+/* ══ SECTIONS ══ */
+.section {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 80px 28px 130px;
+  text-align: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .7s ease, transform .7s ease;
+  transform: translateY(20px);
+}
+.section.active {
+  opacity: 1; pointer-events: all;
+  transform: translateY(0);
+}
+.section.out {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* ══ TYPOGRAPHY ══ */
+.sec-label {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: #25D366; font-weight: 700; margin-bottom: 10px;
+  opacity: .9;
+}
+.sec-icon {
+  font-size: 64px; margin-bottom: 18px;
+  filter: drop-shadow(0 4px 20px rgba(37,211,102,.3));
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.sec-title {
+  font-size: 30px; font-weight: 900;
+  color: #fff; line-height: 1.3;
+  margin-bottom: 14px;
+  text-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+.sec-title .hl { color: #25D366; }
+.sec-title .hl2 { color: #7effa0; }
+
+.sec-body {
+  font-size: 18px; font-weight: 600;
+  color: rgba(255,255,255,.82);
+  line-height: 1.75;
+  max-width: 340px;
+}
+.sec-body strong { color: #fff; }
+
+/* ══ STEP CARDS ══ */
+.steps-col {
+  display: flex; flex-direction: column;
+  gap: 12px; width: 100%; max-width: 340px;
+}
+.step-card {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(37,211,102,.25);
+  border-radius: 16px;
+  padding: 16px 18px;
+  display: flex; gap: 14px; align-items: flex-start;
+  text-align: right;
+}
+.step-num-circle {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: #25D366; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 900; color: #fff;
+}
+.step-card h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.step-card p  { font-size: 13px; color: rgba(255,255,255,.62); line-height: 1.55; }
+.step-card .form-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(37,211,102,.15); border: 1px solid rgba(37,211,102,.35);
+  border-radius: 8px; padding: 5px 10px; margin-top: 6px;
+  font-size: 12px; font-weight: 700; color: #25D366;
+  text-decoration: none; transition: background .2s;
+}
+.step-card .form-link:hover { background: rgba(37,211,102,.28); }
+
+/* ══ GROUP ITEMS ══ */
+.groups-col {
+  display: flex; flex-direction: column;
+  gap: 9px; width: 100%; max-width: 340px;
+}
+.group-row {
+  background: rgba(255,255,255,.05);
+  border-right: 3px solid #25D366; border-radius: 0 12px 12px 0;
+  padding: 12px 14px;
+  display: flex; gap: 12px; align-items: center;
+  text-align: right;
+  transform: translateX(-20px); opacity: 0;
+  animation: slideIn .5s ease forwards;
+}
+@keyframes slideIn { to { transform:translateX(0); opacity:1; } }
+.group-row:nth-child(1) { animation-delay: .0s; }
+.group-row:nth-child(2) { animation-delay: .15s; }
+.group-row:nth-child(3) { animation-delay: .30s; }
+.group-row:nth-child(4) { animation-delay: .45s; }
+.group-row:nth-child(5) { animation-delay: .60s; }
+
+.gr-icon { font-size: 26px; flex-shrink:0; }
+.gr-info { flex: 1; }
+.gr-name { font-size: 14px; font-weight: 700; color: #fff; }
+.gr-desc { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; line-height: 1.4; }
+.gr-tag {
+  flex-shrink: 0; font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 8px;
+}
+
+/* ══ TIP ITEMS ══ */
+.tips-col {
+  display: flex; flex-direction: column;
+  gap: 12px; width: 100%; max-width: 340px;
+}
+.tip-row {
+  background: rgba(255,255,255,.05);
+  border-radius: 14px; padding: 14px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+  text-align: right;
+}
+.tip-num {
+  width: 32px; height: 32px; flex-shrink: 0;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 900; color: #fff;
+}
+.tip-row h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.tip-row p  { font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.5; }
+
+/* ══ WHATSAPP SCREEN MOCKUP ══ */
+.wa-screen {
+  width:100%; max-width:310px;
+  background:#111b21; border-radius:16px; overflow:hidden;
+  box-shadow:0 8px 28px rgba(0,0,0,.65);
+  border:1px solid rgba(255,255,255,.08);
+  direction:ltr; font-size:13px;
+}
+.wa-topbar {
+  background:#202c33;
+  display:flex; align-items:center; gap:10px;
+  padding:9px 12px; border-bottom:1px solid rgba(255,255,255,.06);
+}
+.wa-comm-avatar {
+  width:34px; height:34px; border-radius:50%;
+  background:linear-gradient(135deg,#1a5c30,#25D366);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; flex-shrink:0;
+}
+.wa-topbar-info { flex:1; }
+.wa-topbar-name { font-size:13px; font-weight:700; color:#e9edef; }
+.wa-topbar-sub  { font-size:10px; color:#8696a0; }
+.wa-section-label {
+  padding:5px 12px 3px; font-size:10px; color:#8696a0; font-weight:700;
+}
+.wa-row {
+  display:flex; align-items:center; gap:10px; padding:7px 12px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.wa-row:last-child { border-bottom:none; }
+.wa-row-av {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:18px;
+}
+.wa-row-body { flex:1; text-align:left; overflow:hidden; }
+.wa-row-name { font-size:12.5px; font-weight:700; color:#e9edef; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.wa-row-sub  { font-size:10.5px; color:#8696a0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.wa-row-time { font-size:10px; color:#8696a0; flex-shrink:0; }
+.wa-lock { font-size:13px; color:#8696a0; margin-right:2px; }
+
+/* ══ WHATSAPP GROUP POPUP ══ */
+.wa-popup {
+  width:100%; max-width:300px;
+  background:#1f2c34; border-radius:16px; overflow:hidden;
+  box-shadow:0 8px 28px rgba(0,0,0,.65);
+  border:1px solid rgba(255,255,255,.08); direction:ltr;
+}
+.wa-popup-head {
+  background:linear-gradient(160deg,#0d3320 0%,#1a4a2a 100%);
+  padding:18px 14px 14px; text-align:center;
+}
+.wa-popup-av {
+  width:56px; height:56px; border-radius:50%;
+  background:linear-gradient(135deg,#0d3320,#25D366);
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; margin:0 auto 9px;
+  border:2px solid rgba(37,211,102,.4);
+}
+.wa-popup-name { font-size:15px; font-weight:900; color:#e9edef; direction:rtl; margin-bottom:2px; }
+.wa-popup-date { font-size:10px; color:#8696a0; }
+.wa-popup-body {
+  padding:10px 14px 12px; font-size:12px; color:#d1d7db;
+  line-height:1.65; direction:rtl; text-align:right;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.wa-popup-join {
+  display:block; text-align:center; padding:11px;
+  font-size:13px; font-weight:700; color:#25D366;
+  background:rgba(37,211,102,.05);
+}
+/* pulse arrow hint */
+.tap-arrow {
+  display:flex; align-items:center; gap:6px;
+  background:rgba(37,211,102,.12); border:1.5px dashed rgba(37,211,102,.5);
+  border-radius:10px; padding:6px 12px; margin-top:8px;
+  font-size:12px; font-weight:700; color:#7effa0; width:100%; max-width:310px;
+  animation:pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* ══ PHONE MOCKUP NAV BAR ══ */
+.wa-nav-bar {
+  display: flex; justify-content: space-around; align-items: center;
+  background: rgba(18,40,24,.85); border: 1px solid rgba(37,211,102,.2);
+  border-radius: 16px; padding: 10px 6px 8px;
+  width: 100%; max-width: 320px; margin: 0 auto 16px;
+  backdrop-filter: blur(8px);
+}
+.wa-nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 10px; color: rgba(255,255,255,.45); font-weight: 600;
+  transition: all .3s; cursor: default;
+  padding: 4px 10px; border-radius: 10px;
+}
+.wa-nav-item.active {
+  color: #25D366;
+  background: rgba(37,211,102,.12);
+}
+.wa-nav-icon { font-size: 20px; }
+.wa-nav-badge {
+  display: inline-block; background: #25D366; color: #fff;
+  border-radius: 50%; width: 16px; height: 16px;
+  font-size: 9px; font-weight: 900; text-align: center; line-height: 16px;
+  position: relative; top: -6px; right: -6px; margin-right: -14px;
+}
+/* How-to steps with arrows */
+.howto-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px; padding: 13px 15px;
+  text-align: right; width: 100%; max-width: 340px;
+}
+.howto-step + .howto-step { margin-top: 8px; }
+.howto-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+.howto-info h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.howto-info p  { font-size: 12.5px; color: rgba(255,255,255,.6); line-height: 1.5; }
+.tap-hint {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(37,211,102,.15); border: 1px solid rgba(37,211,102,.3);
+  border-radius: 8px; padding: 3px 9px; margin-top: 6px;
+  font-size: 11.5px; font-weight: 700; color: #7effa0;
+}
+
+/* ══ GROW NOTE ══ */
+.grow-card {
+  background: rgba(37,211,102,.08);
+  border: 1.5px solid rgba(37,211,102,.3);
+  border-radius: 18px; padding: 24px 22px;
+  max-width: 340px;
+}
+.grow-card .grow-icon { font-size: 46px; margin-bottom: 12px; }
+.grow-card h3 { font-size: 20px; font-weight: 900; color: #7effa0; margin-bottom: 10px; line-height: 1.35; }
+.grow-card p  { font-size: 16px; color: rgba(255,255,255,.75); line-height: 1.75; }
+
+/* ══ OUTRO ══ */
+.outro-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.outro-wrap .check { font-size: 70px; animation: pop .5s cubic-bezier(.175,.885,.32,1.275); }
+@keyframes pop { 0%{transform:scale(0)} 100%{transform:scale(1)} }
+.community-link {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(37,211,102,.12);
+  border: 1.5px solid rgba(37,211,102,.4);
+  border-radius: 14px; padding: 14px 20px;
+  text-decoration: none; transition: background .2s; width: 100%; max-width: 320px;
+  justify-content: center;
+}
+.community-link:hover { background: rgba(37,211,102,.22); }
+.community-link span { font-size: 16px; font-weight: 700; color: #fff; }
+.community-link small { font-size: 11px; color: rgba(255,255,255,.6); }
+
+/* ══ NARRATION BAR ══ */
+.narr-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  min-height: 100px;
+  background: linear-gradient(to top,
+    rgba(0,0,0,.92) 0%,
+    rgba(0,0,0,.75) 55%,
+    transparent 100%);
+  padding: 18px 20px 26px;
+  z-index: 30;
+  display: flex; align-items: flex-end; gap: 0;
+}
+/* caption pill */
+.narr-pill {
+  width: 100%;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  padding: 10px 14px 10px 10px;
+  display: flex; align-items: flex-start; gap: 8px;
+  backdrop-filter: blur(6px);
+}
+.narr-icon {
+  font-size: 16px; flex-shrink: 0;
+  margin-top: 2px;
+  opacity: .85;
+}
+.narr-text {
+  flex: 1;
+  font-size: 15.5px; font-weight: 700; color: #fff;
+  line-height: 1.6; direction: rtl; text-align: right;
+  min-height: 1.6em;
+  letter-spacing: .01em;
+  text-shadow: 0 1px 6px rgba(0,0,0,.7);
+}
+.narr-text .word {
+  opacity: 0;
+  animation: wIn .22s ease forwards;
+  display: inline;
+}
+@keyframes wIn { to { opacity: 1; } }
+
+/* ══ CONTROLS ══ */
+.controls-bar {
+  position: absolute; bottom: 72px; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; z-index: 35;
+}
+.ctrl-btn {
+  background: rgba(255,255,255,.12); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2); border-radius: 50%;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; transition: all .2s;
+  color: #fff; font-family: inherit;
+}
+.ctrl-btn:hover, .ctrl-btn:active { background: rgba(37,211,102,.3); }
+.ctrl-btn.play-btn {
+  width: 58px; height: 58px; font-size: 22px;
+  background: #25D366; border-color: #25D366;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4);
+}
+.ctrl-btn.play-btn:hover { background: #128C7E; }
+
+/* ══ VOICE NOTE ══ */
+.voice-note {
+  position: absolute; top: 60px; left: 16px; right: 16px;
+  background: rgba(66,133,244,.15); border: 1px solid rgba(66,133,244,.3);
+  border-radius: 10px; padding: 8px 14px;
+  font-size: 11.5px; color: rgba(255,255,255,.75);
+  text-align: center; line-height: 1.5;
+  z-index: 40; transition: opacity .5s;
+}
+.voice-note strong { color: #7eb8f7; }
+.voice-note.hidden { opacity: 0; pointer-events: none; }
+
+</style>
+</head>
+<body>
+<div class="video-shell" id="shell">
+
+  <!-- BACKGROUNDS -->
+  <div class="bg-layer bg-0" id="bg0"></div>
+  <div class="bg-layer bg-1" id="bg1"></div>
+  <div class="bg-layer bg-2" id="bg2"></div>
+  <div class="bg-layer bg-3" id="bg3"></div>
+  <div class="bg-layer bg-4" id="bg4"></div>
+
+  <!-- PROGRESS -->
+  <div class="progress-track"><div class="progress-fill" id="pbar"></div></div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="logo-chip">
+      <span>🏡</span>
+      <p>مجلس أسرة آل العَيْدَرُوس<small>مجتمع الوتساب</small></p>
+    </div>
+    <div class="section-dots" id="dots"></div>
+  </div>
+
+  <!-- VOICE NOTE (Chrome) -->
+  <div class="voice-note" id="voiceNote">
+    🌐 لأفضل نطق سعودي افتح في <strong>Google Chrome</strong>
+    <span onclick="this.parentElement.classList.add('hidden')" style="cursor:pointer;margin-right:8px;opacity:.6;">✕</span>
+  </div>
+
+  <!-- ═══ SECTIONS ═══ -->
+
+  <!-- 0: INTRO -->
+  <div class="section active" id="sec0">
+    <div class="sec-icon">💬</div>
+    <div class="sec-title">وصلتك دعوة<br>على <span class="hl">الوتساب؟</span></div>
+    <p class="sec-body">هذا الفيديو يشرح لك كل شيء خطوة بخطوة في أقل من دقيقتين</p>
+  </div>
+
+  <!-- 1: COMMUNITY -->
+  <div class="section" id="sec1">
+    <div class="sec-icon">🏡</div>
+    <div class="sec-label">مرحباً بك في</div>
+    <div class="sec-title">مجتمع مجلس<br>أسرة آل <span class="hl">العَيْدَرُوس</span></div>
+    <p class="sec-body">مجتمع عائلي خاص يجمع أفراد الأسرة في مكان واحد — <strong>منظّم ومرتّب</strong></p>
+  </div>
+
+  <!-- 2: HOW TO JOIN -->
+  <div class="section" id="sec2">
+    <div class="sec-label">🚀 كيف تنضم؟</div>
+    <div class="sec-title" style="font-size:26px;margin-bottom:20px;">خطوتان فقط</div>
+    <div class="steps-col">
+      <div class="step-card">
+        <div class="step-num-circle">١</div>
+        <div>
+          <h3>عبّئ نموذج التسجيل</h3>
+          <p>اضغط على الرابط أدناه وأدخل بياناتك — لا يستغرق أكثر من دقيقة</p>
+          <a class="form-link" href="https://halaidarous25-droid.github.io/majlis-alaidarous-regiser/" target="_blank">📋 نموذج التسجيل ←</a>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num-circle">٢</div>
+        <div>
+          <h3>ستجد رابط المجتمع</h3>
+          <p>في آخر خطوة في النموذج، ستظهر لك رابط الانضمام لمجتمع الوتساب — اضغط عليه وانضم مباشرةً ✅</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A: WHERE TO FIND COMMUNITY IN WHATSAPP -->
+  <div class="section" id="secA">
+    <div class="sec-label">📱 بعد الانضمام</div>
+    <div class="sec-title" style="font-size:22px;margin-bottom:12px;">افتح «المجتمعات»<br>في <span class="hl">الوتساب</span></div>
+    <!-- Real WhatsApp community screen mockup (matches screenshot 3) -->
+    <div class="wa-screen">
+      <div class="wa-topbar">
+        <div class="wa-comm-avatar">🏡</div>
+        <div class="wa-topbar-info">
+          <div class="wa-topbar-name">مجتمع مجلس أسرة آل العيدروس</div>
+          <div class="wa-topbar-sub">Community</div>
+        </div>
+        <div style="color:#aebac1;font-size:18px;">⋯</div>
+      </div>
+      <!-- Announcements -->
+      <div class="wa-row">
+        <div class="wa-row-av" style="background:#1a5c30;">📣</div>
+        <div class="wa-row-body">
+          <div class="wa-row-name">Announcements</div>
+          <div class="wa-row-sub">You added Abo Hashim</div>
+        </div>
+        <div class="wa-row-time">Wednesday</div>
+      </div>
+      <div class="wa-section-label">Groups you're in</div>
+      <!-- حاضنة المبادرات -->
+      <div class="wa-row">
+        <div class="wa-row-av" style="background:#1a3a1a;">🌱</div>
+        <div class="wa-row-body">
+          <div class="wa-row-name">حاضنة المبادرات</div>
+          <div class="wa-row-sub">Mohsen reacted 👍 to "📷 Photo"</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+          <div class="wa-row-time">4:31PM</div>
+          <div style="font-size:13px;color:#8696a0;">👁</div>
+        </div>
+      </div>
+      <!-- ديوانية المجلس -->
+      <div class="wa-row">
+        <div class="wa-row-av" style="background:#2a1a0a;">🏛️</div>
+        <div class="wa-row-body">
+          <div class="wa-row-name">ديوانية المجلس (عام)</div>
+          <div class="wa-row-sub">Mohammad Salem: بيت الحبيب حسن...</div>
+        </div>
+        <div class="wa-row-time">4:27PM</div>
+      </div>
+      <!-- صالة الترحيب -->
+      <div class="wa-row">
+        <div class="wa-row-av" style="background:#0a2a1a;">🤝</div>
+        <div class="wa-row-body">
+          <div class="wa-row-name">صالة الترحيب والتعارف</div>
+          <div class="wa-row-sub">Abo Abdollrahman joined from the community</div>
+        </div>
+        <div class="wa-row-time">Wednesday</div>
+      </div>
+      <!-- فريق تنسيق -->
+      <div class="wa-row">
+        <div class="wa-row-av" style="background:#1a1a2a;">📅</div>
+        <div class="wa-row-body">
+          <div class="wa-row-name">فريق تنسيق المناسبات والفعاليات</div>
+          <div class="wa-row-sub">You added عبدالرحمن سقاف</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+          <div class="wa-row-time">Wednesday</div>
+          <div style="font-size:13px;color:#8696a0;">👁</div>
+        </div>
+      </div>
+    </div>
+    <div class="tap-arrow" style="margin-top:10px;">👆 اضغط «المجتمعات» في شريط الوتساب السفلي</div>
+  </div>
+
+  <!-- B: HOW TO BROWSE + READ GROUP DESCRIPTION -->
+  <div class="section" id="secB">
+    <div class="sec-label">🔍 اقرأ وصف المجموعة</div>
+    <div class="sec-title" style="font-size:20px;margin-bottom:10px;">اضغط اسمها<br><span class="hl">في الأعلى</span> لتعرف هدفها</div>
+    <!-- Popup mockup: ديوانية المجلس (matches screenshot 1) -->
+    <div class="wa-popup">
+      <div class="wa-popup-head">
+        <div class="wa-popup-av">🏛️</div>
+        <div class="wa-popup-name">ديوانية المجلس (عام)</div>
+        <div class="wa-popup-date">Created by Hussain Alaidarous on 25 Mar 2026</div>
+      </div>
+      <div class="wa-popup-body">
+        هذه المجموعة هي ديوانية مفتوحة لكل 😊<br>
+        تجمع بين النكتة والضحكة، والمعلومة المفيدة، والخاطرة التي تستأهل.<br>
+        المهم إنك تدخل وتطلع بشيء — إما ابتسامة أو فائدة مع الاثنين وبعض! 🌿<br>
+        مع مراعاة الالتزام بالشروط العامة كما هو موضح في ميثاق المجتمع.<br><br>
+        <strong style="color:#25D366;">وقتاً ممتعاً 😊</strong>
+      </div>
+      <div class="wa-popup-join">Join group</div>
+    </div>
+    <div class="tap-arrow">👆 اضغط اسم المجموعة في أعلى الشاشة</div>
+  </div>
+
+  <!-- 3: GROUPS — split into two slides: list then صالة popup -->
+  <div class="section" id="sec3">
+    <div class="sec-label">🗂️ ما الذي ستجده؟</div>
+    <div class="sec-title" style="font-size:22px;margin-bottom:12px;">المجموعات الفرعية</div>
+    <div class="groups-col" style="max-width:320px;">
+      <div class="group-row">
+        <div class="gr-icon">📣</div>
+        <div class="gr-info">
+          <div class="gr-name">Announcements</div>
+          <div class="gr-desc">إعلانات رسمية — للقراءة فقط</div>
+        </div>
+        <div class="gr-tag" style="background:rgba(37,211,102,.15);color:#7effa0;">📖 قراءة</div>
+      </div>
+      <div class="group-row">
+        <div class="gr-icon">🏛️</div>
+        <div class="gr-info">
+          <div class="gr-name">ديوانية المجلس (عام)</div>
+          <div class="gr-desc">نقاش ودي مفتوح — للجميع</div>
+        </div>
+        <div class="gr-tag" style="background:rgba(134,239,172,.12);color:#86efac;">✅ مفتوحة</div>
+      </div>
+      <div class="group-row">
+        <div class="gr-icon">🤝</div>
+        <div class="gr-info">
+          <div class="gr-name">صالة الترحيب والتعارف</div>
+          <div class="gr-desc">قدّم نفسك أول ما تدخل</div>
+        </div>
+        <div class="gr-tag" style="background:rgba(134,239,172,.12);color:#86efac;">✅ مفتوحة</div>
+      </div>
+      <div class="group-row">
+        <div class="gr-icon">🌱</div>
+        <div class="gr-info">
+          <div class="gr-name">حاضنة المبادرات</div>
+          <div class="gr-desc">أفكارك ومقترحاتك — بموافقة المشرف</div>
+        </div>
+        <div class="gr-tag" style="background:rgba(251,191,36,.12);color:#fcd34d;">⏳ بموافقة</div>
+      </div>
+      <div class="group-row">
+        <div class="gr-icon">📅</div>
+        <div class="gr-info">
+          <div class="gr-name">فريق تنسيق المناسبات</div>
+          <div class="gr-desc">أفراح وفعاليات — للمنظّمين فقط</div>
+        </div>
+        <div class="gr-tag" style="background:rgba(167,139,250,.12);color:#c4b5fd;">🔒 خاصة</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3b: SALAT AL-TARHIB POPUP (matches screenshot 2) -->
+  <div class="section" id="sec3b">
+    <div class="sec-label">🤝 مثال — صالة الترحيب</div>
+    <div class="sec-title" style="font-size:20px;margin-bottom:10px;">هكذا يبدو<br><span class="hl">وصف المجموعة</span></div>
+    <div class="wa-popup">
+      <div class="wa-popup-head">
+        <div class="wa-popup-av">🤝</div>
+        <div class="wa-popup-name">صالة الترحيب والتعارف</div>
+        <div class="wa-popup-date">Created by Hussain Alaidarous on 25 Mar 2026</div>
+      </div>
+      <div class="wa-popup-body">
+        أهلاً بك في بيتك الكبير! ♥️<br>
+        هنا يعرّف كل عضو جديد بنفسه — اكتب اسمك وفرع العائلة ومدينتك،
+        وسيرحب بك إخوانك وأهلك من كل مكان.<br><br>
+        هذه المجموعة فقط للتعارف والترحيب بالضيوف الجدد في المجتمع.
+      </div>
+      <div class="wa-popup-join">Join group</div>
+    </div>
+    <div class="tap-arrow">👆 اضغط اسم أي مجموعة لتقرأ وصفها</div>
+  </div>
+
+  <!-- 4: GROUPS WILL GROW -->
+  <div class="section" id="sec4">
+    <div class="grow-card">
+      <div class="grow-icon">🌿</div>
+      <h3>المجموعات ستتوسع وتتطور</h3>
+      <p>
+        هذه المجموعات الفرعية <strong>ليست نهائية</strong> —
+        ستزيد وتتغير مع الوقت بناءً على <strong>المبادرات والمقترحات</strong>
+        التي تصل لمجلس الأسرة من الأعضاء.
+        <br><br>
+        مجتمعنا في <span style="color:#7effa0;font-weight:700;">نمو مستمر</span> بإذن الله 🤲
+      </p>
+    </div>
+  </div>
+
+  <!-- 5: TIPS -->
+  <div class="section" id="sec5">
+    <div class="sec-label">🎯 نصائح مهمة</div>
+    <div class="sec-title" style="font-size:26px;margin-bottom:18px;">ثلاث نصائح</div>
+    <div class="tips-col">
+      <div class="tip-row">
+        <div class="tip-num">١</div>
+        <div>
+          <h3>قناة الإعلانات للقراءة فقط 📖</h3>
+          <p>المشرفون وحدهم يكتبون فيها — فعّل إشعاراتها حتى لا يفوتك شيء</p>
+        </div>
+      </div>
+      <div class="tip-row">
+        <div class="tip-num">٢</div>
+        <div>
+          <h3>اكتب في المجموعة الصحيحة 🎯</h3>
+          <p>لكل مجموعة هدفها — فكرة؟ نقاش؟ مناسبة؟ اختر المكان المناسب</p>
+        </div>
+      </div>
+      <div class="tip-row">
+        <div class="tip-num">٣</div>
+        <div>
+          <h3>استخدم ميزة "رد" 📩</h3>
+          <p>اضغط مطولاً على أي رسالة ← اختر "رد" — يمنع اختلاط المحادثات</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6: OUTRO -->
+  <div class="section" id="sec6">
+    <div class="outro-wrap">
+      <div class="check">🎉</div>
+      <div class="sec-title">أهلاً وسهلاً<br>فيك <span class="hl">معنا!</span></div>
+      <p class="sec-body" style="margin-bottom:8px;">للانضمام، عبّئ نموذج التسجيل أدناه — ستجد رابط المجتمع في آخر خطوة</p>
+      <a class="community-link" href="https://halaidarous25-droid.github.io/majlis-alaidarous-regiser/" target="_blank">
+        <span>📋 سجّل الآن للانضمام</span>
+      </a>
+      <p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:6px;">نموذج التسجيل — مجلس أسرة آل العَيْدَرُوس</p>
+    </div>
+  </div>
+
+  <!-- NARRATION -->
+  <div class="narr-bar">
+    <div class="narr-pill">
+      <span class="narr-icon" id="narrIcon">🔊</span>
+      <div class="narr-text" id="narrText">اضغط تشغيل للبدء</div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls-bar">
+    <button class="ctrl-btn" onclick="prevSec()" title="السابق">⟩</button>
+    <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <button class="ctrl-btn" onclick="nextSec()" title="التالي">⟨</button>
+  </div>
+
+</div><!-- /video-shell -->
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const SECTIONS = [
+  {
+    id: 'sec0', bg: 0,
+    narr: [
+      'أهلاً وسهلاً بك.',
+      'وصلتك دعوة للانضمام إلى مجتمع مجلس أسرة آل العَيْدَرُوس.',
+      'هذا الفيديو سيشرح لك كل شيء خطوة بخطوة في أقل من دقيقتين.'
+    ]
+  },
+  {
+    id: 'sec1', bg: 1,
+    narr: [
+      'مجتمع مجلس أسرة آل العَيْدَرُوس هو مجتمع عائلي خاص على تطبيق الوتساب.',
+      'يجمع أفراد الأسرة في مكان واحد منظَّم، ويُسهِّل التواصل والتنسيق بين الجميع.'
+    ]
+  },
+  {
+    id: 'sec2', bg: 2,
+    narr: [
+      'للانضمام، هناك خطوتان فقط.',
+      'أولاً: اضغط على رابط نموذج التسجيل، واملأ بياناتك — لا يستغرق أكثر من دقيقة واحدة فقط.',
+      'ثانياً: في آخِر خطوة في النموذج، ستجد رابط الانضمام لمجتمع الوتساب — اضغط عليه وانضمْ مُباشَرةً.'
+    ]
+  },
+  {
+    id: 'secA', bg: 1,
+    narr: [
+      'بعد الانضمام، افتح تطبيق الوتساب.',
+      'انظر لشريط التنقل في أسفل الشاشة، وابحث عن أيقونة المجتمعات.',
+      'اضغط عليها، وستجد مجتمع مجلس أسرة آل العَيْدَرُوس في القائمة.',
+      'اضغط على اسمه للدخول إليه.'
+    ]
+  },
+  {
+    id: 'secB', bg: 3,
+    narr: [
+      'داخل المجتمع ستجد قناة الإعلانات والمجموعات الفرعية مرتّبة في قائمة واحدة.',
+      'للدخول إلى أي مجموعة، اضغط عليها مباشرة من القائمة.',
+      'لمعرفة وصف المجموعة وصلاحياتها، اضغط على اسمها أو صورتها في أعلى الشاشة.',
+      'ستظهر لك تفاصيل المجموعة وهدفها وما يُسمح بالمشاركة فيه.'
+    ]
+  },
+  {
+    id: 'sec3', bg: 3,
+    narr: [
+      'بعد الانضمام ستجد عدة مجموعات فرعية.',
+      'قناة الإِعلانات: للقراءة فقط، تصلكَ منها الأخبار الرسمية للمجلس.',
+      'ديوانية المجلس: مفتوحة للحوار والنقاش الودي لجميع أفراد الأسرة.',
+      'صالة الترحيب والتعارف: قدِّم نفسك هنا أول شيء عند دخولك للمرة الأولى.',
+      'حاضنة المبادرات: لمشاركة أفكارك ومقترحاتك، تحتاج موافقة المشرف.',
+      'وفريق تنسيق المناسبات: خاصة بالمنظِّمين للأفراح والفعاليات الأسرية.'
+    ]
+  },
+  {
+    id: 'sec3b', bg: 1,
+    narr: [
+      'كل مجموعة لها وصفها الخاص توضح هدفها وصلاحياتها.',
+      'مثلاً، صالة الترحيب والتعارف — هنا يعرّف كل عضو جديد بنفسه.',
+      'اكتب اسمك وفرع العائلة ومدينتك، وسيرحب بك أهلك من كل مكان.',
+      'لقراءة وصف أي مجموعة، اضغط على اسمها في أعلى شاشة المحادثة.'
+    ]
+  },
+  {
+    id: 'sec4', bg: 4,
+    narr: [
+      'وتذكَّر — هذه المجموعات الفرعية ليست نهائية.',
+      'ستتوسَّع وتتطوَّر مع الوقت بناءً على المبادرات والمقترحات التي تصل لمجلس الأسرة من الأعضاء.',
+      'مجتمعنا في نمو مستمر بإذن الله.'
+    ]
+  },
+  {
+    id: 'sec5', bg: 0,
+    narr: [
+      'ثلاث نصائح مهمة تساعدك على الاستفادة من المجتمع.',
+      'أولاً: قناة الإعلانات للقراءة فقط — فعِّل إشعاراتها حتى لا يفوتك أي خبر.',
+      'ثانياً: اكتب دائماً في المجموعة المناسبة لموضوعك.',
+      'ثالثاً: للرد على رسالة، اضغط عليها مطولاً واختر "رد" — هذا يمنع اختلاط المحادثات.'
+    ]
+  },
+  {
+    id: 'sec6', bg: 2,
+    narr: [
+      'أهلاً وسهلاً فيك معنا في مجتمع مجلس أسرة آل العَيْدَرُوس.',
+      'إذا كان لديك أي سؤال، راسل المشرف مباشرة، أو اكتب في ديوانية المجلس.',
+      'نسعد بوجودك، وبالتوفيق.'
+    ]
+  }
+];
+
+const TOTAL = SECTIONS.length;
+let cur = 0;
+let playing = false;
+let sentIdx = 0;
+let wordTimer = null;
+let sentTimer = null;
+let progressTimer = null;
+const synth = window.speechSynthesis;
+let saVoice = null;
+
+/* ── find best Saudi/Arabic voice ── */
+function loadVoices() {
+  const v = synth.getVoices();
+  saVoice =
+       v.find(x => x.lang === 'ar-SA' && /Google/i.test(x.name))
+    || v.find(x => x.lang === 'ar-SA' && /Microsoft/i.test(x.name))
+    || v.find(x => x.lang === 'ar-SA')
+    || v.find(x => x.lang === 'ar-EG' && /Google/i.test(x.name))
+    || v.find(x => x.lang === 'ar-EG')
+    || v.find(x => x.lang.startsWith('ar'))
+    || null;
+}
+synth.addEventListener?.('voiceschanged', loadVoices);
+loadVoices();
+setTimeout(loadVoices, 500);
+setTimeout(loadVoices, 1500);
+setTimeout(loadVoices, 3000);
+
+/* ── Chrome keepalive: prevents 15s cutoff bug ── */
+let keepAliveId = null;
+function startKeepAlive() {
+  stopKeepAlive();
+  keepAliveId = setInterval(() => {
+    if (synth.speaking && !synth.paused) {
+      synth.pause();
+      setTimeout(() => synth.resume(), 50);
+    }
+  }, 9000);
+}
+function stopKeepAlive() {
+  clearInterval(keepAliveId);
+  keepAliveId = null;
+}
+
+/* ── build dots ── */
+const dotsEl = document.getElementById('dots');
+for(let i=0; i<TOTAL; i++) {
+  const d = document.createElement('i');
+  d.style.width = d.style.height = (i===0 ? '8px' : '5px');
+  dotsEl.appendChild(d);
+}
+
+function updateDots() {
+  Array.from(dotsEl.children).forEach((d,i) => {
+    d.style.background = i === cur ? '#25D366' : i < cur ? 'rgba(37,211,102,.45)' : 'rgba(255,255,255,.2)';
+    d.style.width = d.style.height = i === cur ? '8px' : '5px';
+  });
+}
+
+/* ── background switch ── */
+function switchBg(idx) {
+  for(let i=0; i<5; i++) {
+    document.getElementById('bg'+i).style.opacity = i === idx ? '1' : '0';
+  }
+}
+
+/* ── show section ── */
+function showSection(n) {
+  const prev = document.getElementById(SECTIONS[cur].id);
+  cur = n;
+  const next = document.getElementById(SECTIONS[cur].id);
+  prev.classList.remove('active');
+  prev.classList.add('out');
+  setTimeout(() => prev.classList.remove('out'), 800);
+  next.classList.add('active');
+  switchBg(SECTIONS[cur].bg);
+  updateDots();
+  updateProgress();
+  sentIdx = 0;
+  clearTimers();
+  if(playing) runNarration();
+}
+
+function updateProgress() {
+  document.getElementById('pbar').style.width = ((cur / (TOTAL-1)) * 100) + '%';
+}
+
+/* ── narration: word-by-word display + event-driven TTS ── */
+const narrText = document.getElementById('narrText');
+
+/* Clean text before sending to TTS */
+function cleanForTTS(text) {
+  return text
+    .replace(/[🎉🏡💬🗂️🌱🏛️🤝📣📅📖✅⏳🔒🎯📩🌿🤲🔊▶⟩⟨←]/gu, '')
+    .replace(/—/g, '، ')       /* em-dash → pause comma for natural flow */
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+/* Split a long sentence into natural spoken chunks at commas/colons */
+function chunkify(text) {
+  const cleaned = cleanForTTS(text);
+  /* Split after Arabic comma ، or colon : but keep chunks ≥ 4 words */
+  const parts = cleaned.split(/(?<=[،:؛])\s+/);
+  const chunks = [];
+  let buf = '';
+  for (const p of parts) {
+    const test = buf ? buf + ' ' + p : p;
+    if (test.split(/\s+/).length > 12 && buf) {
+      chunks.push(buf.trim());
+      buf = p;
+    } else {
+      buf = test;
+    }
+  }
+  if (buf.trim()) chunks.push(buf.trim());
+  return chunks.length ? chunks : [cleaned];
+}
+
+/* Speak one sentence, fire onDone when truly finished */
+function speakSentence(text, onDone) {
+  const chunks = chunkify(text);
+  let ci = 0;
+
+  function nextChunk() {
+    if (!playing) return;
+    if (ci >= chunks.length) {
+      if (onDone) setTimeout(onDone, 280);
+      return;
+    }
+    const utt = new SpeechSynthesisUtterance(chunks[ci]);
+    utt.lang   = 'ar-SA';
+    utt.rate   = 0.82;
+    utt.pitch  = 1.0;
+    utt.volume = 1.0;
+    if (saVoice) utt.voice = saVoice;
+
+    utt.onend = () => {
+      ci++;
+      setTimeout(nextChunk, 120);   /* small natural pause between chunks */
+    };
+    utt.onerror = (ev) => {
+      /* skip chunk on error, don't stop entirely */
+      console.warn('TTS chunk error:', ev.error, chunks[ci]);
+      ci++;
+      setTimeout(nextChunk, 200);
+    };
+    synth.speak(utt);
+  }
+
+  synth.cancel();
+  setTimeout(nextChunk, 80);   /* tiny delay avoids Chrome cancel-race */
+}
+
+/* Reveal words one by one in the caption bar */
+function typeWords(sentence) {
+  clearTimeout(wordTimer);
+  narrText.innerHTML = '';
+  const words = sentence.split(/\s+/);
+  let wi = 0;
+  function next() {
+    if (wi >= words.length) return;
+    const sp = document.createElement('span');
+    sp.className = 'word';
+    sp.textContent = words[wi] + (wi < words.length - 1 ? ' ' : '');
+    narrText.appendChild(sp);
+    wi++;
+    wordTimer = setTimeout(next, 95);
+  }
+  next();
+}
+
+/* Run narration for current section — EVENT-DRIVEN, not timer-based */
+function runNarration() {
+  if (!playing) return;
+  const sents = SECTIONS[cur].narr;
+  if (sentIdx >= sents.length) {
+    sentTimer = setTimeout(() => {
+      if (cur < TOTAL - 1) showSection(cur + 1);
+      else stopPlay();
+    }, 700);
+    return;
+  }
+  const s = sents[sentIdx];
+  typeWords(s);                      /* show text immediately */
+  speakSentence(s, () => {           /* advance only when TTS truly done */
+    if (!playing) return;
+    sentIdx++;
+    sentTimer = setTimeout(runNarration, 150);
+  });
+}
+
+function clearTimers() {
+  clearTimeout(wordTimer);
+  clearTimeout(sentTimer);
+  stopKeepAlive();
+  synth.cancel();
+  narrText.innerHTML = '';
+}
+
+/* ── playback control ── */
+function startPlay() {
+  playing = true;
+  document.getElementById('playBtn').textContent = '⏸';
+  narrText.textContent = '';
+  startKeepAlive();
+  runNarration();
+}
+function stopPlay() {
+  playing = false;
+  clearTimers();
+  stopKeepAlive();
+  document.getElementById('playBtn').textContent = '▶';
+  narrText.textContent = 'اضغط تشغيل للمتابعة';
+}
+function togglePlay() {
+  if(playing) stopPlay();
+  else {
+    if(cur === TOTAL-1 && sentIdx >= SECTIONS[cur].narr.length) {
+      showSection(0);
+    }
+    startPlay();
+  }
+}
+function nextSec() {
+  stopPlay();
+  if(cur < TOTAL-1) { showSection(cur+1); }
+}
+function prevSec() {
+  stopPlay();
+  if(cur > 0) { showSection(cur-1); }
+}
+
+/* ── keyboard ── */
+document.addEventListener('keydown', e => {
+  if(e.key===' ')          { e.preventDefault(); togglePlay(); }
+  if(e.key==='ArrowLeft')  nextSec();
+  if(e.key==='ArrowRight') prevSec();
+});
+
+/* ── swipe (mobile) ── */
+let touchX = 0;
+document.getElementById('shell').addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+document.getElementById('shell').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(dx) > 50) { if(dx < 0) nextSec(); else prevSec(); }
+}, {passive:true});
+
+/* ── Chrome detection ── */
+(function() {
+  const isChrome = /Chrome\//.test(navigator.userAgent) && !/Edg\/|OPR\//.test(navigator.userAgent);
+  if(isChrome) document.getElementById('voiceNote').classList.add('hidden');
+})();
+
+/* ── init ── */
+updateDots();
+updateProgress();
+switchBg(0);
+</script>
+</body>
+</html>
