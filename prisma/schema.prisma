@@ -1,0 +1,129 @@
+// PostgreSQL-ready schema. Use SQLite by changing provider to "sqlite" and url accordingly.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  HR_SPECIALIST
+}
+
+model User {
+  id                 String           @id @default(cuid())
+  name               String
+  email              String           @unique
+  role               Role             @default(HR_SPECIALIST)
+  canDelete          Boolean          @default(false)
+  responsibilities   Responsibility[] @relation("OwnerResponsibilities")
+  createdAuditLogs   AuditLog[]       @relation("CreatedBy")
+  updatedAuditLogs   AuditLog[]       @relation("UpdatedBy")
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+}
+
+model Responsibility {
+  id                    String                 @id @default(cuid())
+  ownerId               String?
+  owner                 User?                  @relation("OwnerResponsibilities", fields: [ownerId], references: [id])
+  ownerName             String
+  title                 String
+  categoryId            String?
+  category              Category?              @relation(fields: [categoryId], references: [id])
+  categoryOther         String?
+  description           String?
+  requestChannelId      String?
+  requestChannel        Channel?               @relation("RequestChannel", fields: [requestChannelId], references: [id])
+  actionType            String
+  monthlyRequests       Int                    @default(0)
+  completionTrigger     String?
+  durationType          String?
+  durationValue         Int                    @default(0)
+  impact                String
+  kpi                   String?
+  notes                 String?
+  weightScore           Int                    @default(1)
+  loadScore             Int                    @default(1)
+  completionRate        Int                    @default(0)
+  documentationStatus   String                 @default("غير مكتمل")
+  steps                 ResponsibilityStep[]
+  reviewers             Reviewer[]
+  approvers             Approver[]
+  followUpMethods       FollowUpMethod[]
+  channels              ResponsibilityChannel[]
+  auditLogs             AuditLog[]
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+}
+
+model ResponsibilityStep {
+  id               String         @id @default(cuid())
+  responsibilityId String
+  responsibility   Responsibility @relation(fields: [responsibilityId], references: [id], onDelete: Cascade)
+  order            Int
+  name             String
+  description      String?
+  channel          String?
+  actionType       String
+  notes            String?
+}
+
+model Reviewer {
+  id               String         @id @default(cuid())
+  responsibilityId String
+  responsibility   Responsibility @relation(fields: [responsibilityId], references: [id], onDelete: Cascade)
+  jobTitle         String
+}
+
+model Approver {
+  id               String         @id @default(cuid())
+  responsibilityId String
+  responsibility   Responsibility @relation(fields: [responsibilityId], references: [id], onDelete: Cascade)
+  jobTitle         String
+}
+
+model FollowUpMethod {
+  id               String         @id @default(cuid())
+  responsibilityId String
+  responsibility   Responsibility @relation(fields: [responsibilityId], references: [id], onDelete: Cascade)
+  method           String
+}
+
+model Channel {
+  id                  String                  @id @default(cuid())
+  name                String                  @unique
+  requestedBy         Responsibility[]        @relation("RequestChannel")
+  responsibilities    ResponsibilityChannel[]
+}
+
+model ResponsibilityChannel {
+  responsibilityId String
+  channelId        String
+  responsibility   Responsibility @relation(fields: [responsibilityId], references: [id], onDelete: Cascade)
+  channel          Channel        @relation(fields: [channelId], references: [id])
+
+  @@id([responsibilityId, channelId])
+}
+
+model Category {
+  id               String           @id @default(cuid())
+  name             String           @unique
+  responsibilities Responsibility[]
+}
+
+model AuditLog {
+  id               String          @id @default(cuid())
+  responsibilityId String?
+  responsibility   Responsibility? @relation(fields: [responsibilityId], references: [id], onDelete: SetNull)
+  action           String
+  changedFields    Json?
+  createdById      String?
+  createdBy        User?           @relation("CreatedBy", fields: [createdById], references: [id])
+  updatedById      String?
+  updatedBy        User?           @relation("UpdatedBy", fields: [updatedById], references: [id])
+  createdAt        DateTime        @default(now())
+}
